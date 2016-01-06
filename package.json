@@ -1,0 +1,26 @@
+{
+  "name": "comcom",
+  "version": "1.0.0",
+  "description": "A simple and easy to use comment to comment parser",
+  "main": "dst/lib/index.js",
+  "scripts": {
+    "test": "tap --cov -R spec dst/tst/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrzmmr/comcom.git"
+  },
+  "keywords": [
+    "comment",
+    "comment-parser",
+    "comcom",
+    "comment-comment",
+    "comment-to-comment"
+  ],
+  "author": "mrzmmr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrzmmr/comcom/issues"
+  },
+  "homepage": "https://github.com/mrzmmr/comcom#readme"
+}
