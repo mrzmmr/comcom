@@ -4,7 +4,17 @@
   "description": "A simple and easy to use comment to comment parser",
   "main": "dst/lib/index.js",
   "scripts": {
-    "test": "tap --cov -R spec dst/tst/index.js"
+    "babel": "babel --out-dir dst src",
+    "lint": "eslint src/lib/index.js",
+
+    "test": "tap --cov -R spec dst/tst/index.js",
+    "pretest": "npm run lint; npm run babel",
+
+    "readme": "documentation readme ./src/lib/index.js --readme-file Readme.md -s \"...\"",
+    "prereadme": "mv .babelrc babelrc",
+    "postreadme": "mv babelrc .babelrc",
+
+    "prepublish": "npm t && npm run readme"
   },
   "repository": {
     "type": "git",
