@@ -19,7 +19,7 @@
 import {through} from 'through'
 import {defop} from 'defop'
 
-export function format(options) {
+export function splitLine(options) {
   options = defop(options)
 
   return through(function (chunk) {
