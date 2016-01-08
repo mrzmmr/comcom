@@ -6,14 +6,11 @@
   "scripts": {
     "babel": "babel --out-dir dst src",
     "lint": "eslint src/lib/index.js",
-
     "test": "tap --cov -R spec dst/tst/index.js",
     "pretest": "npm run lint; npm run babel",
-
     "readme": "documentation readme ./src/lib/index.js --readme-file Readme.md -s \"...\"",
     "prereadme": "mv .babelrc babelrc",
     "postreadme": "mv babelrc .babelrc",
-
     "prepublish": "npm t && npm run readme"
   },
   "repository": {
@@ -32,5 +29,12 @@
   "bugs": {
     "url": "https://github.com/mrzmmr/comcom/issues"
   },
-  "homepage": "https://github.com/mrzmmr/comcom#readme"
+  "homepage": "https://github.com/mrzmmr/comcom#readme",
+  "devDependencies": {
+    "eslint": "^1.10.3"
+  },
+  "dependencies": {
+    "defop": "^1.1.4",
+    "string.prototype.startswith": "^0.2.0"
+  }
 }

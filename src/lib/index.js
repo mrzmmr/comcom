@@ -19,6 +19,11 @@
 import {through} from 'through'
 import {defop} from 'defop'
 
+/*
+ * C style single line comment
+ */
+export const CSTYLE_SINGLE = /\s*(?=\/)\/(?=\/)\//g
+
 export function format(options) {
   options = defop(options)
 
