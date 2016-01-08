@@ -24,7 +24,7 @@ import {defop} from 'defop'
  */
 export const CSTYLE_SINGLE = /\s*(?=\/)\/(?=\/)\//g
 
-export function format(options) {
+export function splitLine(options) {
   options = defop(options)
 
   return through(function (chunk) {
