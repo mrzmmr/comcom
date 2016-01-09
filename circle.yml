@@ -1,11 +1,11 @@
 machine:
   environment:
-    COVERALLS_REPO_TOKEN: bAgSH3O8c1Xs5mp4flnwiRa8rEmvH4YLB
+    COVERALLS_REPO_TOKEN: iPQjoVb60SgrDRnSsjl85FyHa6Yazcnj7
     COVERALLS_PARALLEL: true
 
 notify:
   webhooks:
-    - url: https://coveralls.io/webhook?repo_token=bAgSH3O8c1Xs5mp4flnwiRa8rEmvH4YLB
+    - url: https://coveralls.io/webhook?repo_token=iPQjoVb60SgrDRnSsjl85FyHa6Yazcnj7
 
 test:
   override:
