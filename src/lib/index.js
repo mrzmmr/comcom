@@ -12,10 +12,13 @@
  * ```
  *
  * @module comcom
- * @version 1.0.2
+ * @version 1.0.3
  * @author mrzmmr
  */
 
+/*
+ * Imports
+ */
 import {through} from 'through'
 import {defop} from 'defop'
 
@@ -24,7 +27,13 @@ import {defop} from 'defop'
  */
 export const CSTYLE_SINGLE = /\s*(?=\/)\/(?=\/)\//g
 
-export function splitLine(options) {
+/*
+ * C style multiple line comment
+ */
+export const CSTYLE_MULTIPLE_BEG = /\s*(?=\/)\/(?=\*)\**/g
+export const CSTYLE_MULTIPLE_END = /\s*(?=\*)\**(?=\/)\//g
+
+export function split_line(options) {
   options = defop(options)
 
   return through(function (chunk) {
