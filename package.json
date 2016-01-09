@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "defop": "^1.1.4",
+    "source-map-support": "^0.4.0",
     "string.prototype.startswith": "^0.2.0",
     "through": "^2.3.8"
   }
