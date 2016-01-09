@@ -1,6 +1,6 @@
 {
   "name": "comcom",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple and easy to use comment to comment parser",
   "main": "dst/lib/index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "comment-comment",
     "comment-to-comment"
   ],
-  "author": "mrzmmr",
+  "author": "Paul Zimmer",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mrzmmr/comcom/issues"

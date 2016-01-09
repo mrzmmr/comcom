@@ -1,7 +1,12 @@
-import * as lib from '../lib/index'
 import 'string.prototype.startswith'
+import * as lib from '../lib/index'
+import * as Stream from 'stream'
+import {through} from 'through'
 import * as tap from 'tap'
 
+/*
+ * Regex tests
+ */
 tap.test('Regex#CSTYLE_SINGLE', (assert) => {
   let t1 = '// Hello'
   let t2 = '  // world'
@@ -30,4 +35,27 @@ tap.test('Regex#CSTYLE_MULTIPLE', (assert) => {
   assert.ok(t7.startsWith(t7.match(lib.CSTYLE_MULTIPLE_END)[0]))
   assert.ok(t8.startsWith(t8.match(lib.CSTYLE_MULTIPLE_END)[0]))
   assert.end()
+})
+
+/*
+ * lib#split
+ */
+
+tap.test('lib#split', (assert) => {
+  let stream = new Stream.Readable()
+  let result = []
+
+  stream.push('\*\n* Hello\n* World\n*/')
+  stream.push(null)
+
+  stream.pipe(lib.split()).pipe(through((chunk) => {
+    result.push(chunk)
+  })).on('close', () => {
+    assert.equal(result.length, 4)
+    assert.equal(result[0], '\*')
+    assert.equal(result[1], '* Hello')
+    assert.equal(result[2], '* World')
+    assert.equal(result[3], '*/')
+    assert.end()
+  })
 })

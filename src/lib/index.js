@@ -12,7 +12,7 @@
  * ```
  *
  * @module comcom
- * @version 1.0.3
+ * @version 1.0.4
  * @author mrzmmr
  */
 
@@ -33,7 +33,7 @@ export const CSTYLE_SINGLE = /\s*(?=\/)\/(?=\/)\//g
 export const CSTYLE_MULTIPLE_BEG = /\s*(?=\/)\/(?=\*)\**/g
 export const CSTYLE_MULTIPLE_END = /\s*(?=\*)\**(?=\/)\//g
 
-export function split_line(options) {
+export function split(options) {
   options = defop(options)
 
   return through(function (chunk) {
