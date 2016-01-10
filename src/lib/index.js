@@ -12,7 +12,7 @@
  * ```
  *
  * @module comcom
- * @version 1.0.4
+ * @version 1.0.5
  * @author mrzmmr
  */
 
@@ -54,8 +54,10 @@ export function split(ops) {
   ops = defop(ops)
 
   return through(function (chunk) {
-    chunk = chunk.toString().split('\n').forEach((line) => {
-      this.queue(line)
+    let self = this
+
+    return chunk.toString().split('\n').map((line) => {
+      self.queue(line + '\n')
     })
   })
 }
@@ -63,18 +65,20 @@ export function split(ops) {
 export function from(ops) {
   ops = defop(ops)
 
-  let from = ops.from
-
   return through(function (chunk) {
+    let self = this
 
-    /*
-     * C style multiple line
-     */
-    if (from === '/*') {
+    if (chunk.indexOf('/*') > -1) {
+      return switched = false
+    }
+    else if (chunk.indexOf('/*') > -1) {
+      return switched = true
+    }
+    else {
       if (switched) {
-        buffer.push(chunk.replace(CSTYLE_MULTIPLE_MID, ' '))
-        return this.queue('null')
+        return buffer.push(chunk)
       }
+      return this.queue(chunk)
     }
   })
 }
