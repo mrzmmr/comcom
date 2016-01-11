@@ -50,9 +50,7 @@ export const CSTYLE_SINGLE = /\s*(?=\/)\/(?=\/)\//g
 export const CSTYLE_MULTIPLE_BEG = /\s*(?=\/)\/(?=\*)\**/g
 export const CSTYLE_MULTIPLE_END = /\s*(?=\*)\**(?=\/)\//g
 
-export function split(ops) {
-  ops = defop(ops)
-
+export function split() {
   return through(function (chunk) {
     let self = this
 
@@ -62,20 +60,26 @@ export function split(ops) {
   })
 }
 
-export function from(ops) {
-  ops = defop(ops)
-
+export function from(comment) {
   return through(function (chunk) {
-    let self = this
+    var self = this
 
-    if (chunk.indexOf('/*') > -1) {
-      return switched = false
-    }
-    else if (chunk.indexOf('/*') > -1) {
-      return switched = true
+    if (comment.multi) {
+      if (chunk.indexOf(comment.multi.begin) > -1) {
+        return switched = true
+      }
+      else if (chunk.indexOf(comment.multi.end) > -1) {
+        return switched = false
+      }
+      else {
+        if (switched) {
+          return buffer.push(chunk)
+        }
+        return this.queue(chunk)
+      }
     }
     else {
-      if (switched) {
+      if (chunk.indexOf(comment.single) > -1) {
         return buffer.push(chunk)
       }
       return this.queue(chunk)

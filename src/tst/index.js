@@ -45,17 +45,18 @@ tap.test('lib#split', (assert) => {
   let stream = new Stream.Readable()
   let result = []
 
-  stream.push('\*\n* Hello\n* World\n*/')
+  stream.push('/*\n * Hello\n * World\n */')
+
   stream.push(null)
 
   stream.pipe(lib.split()).pipe(through((chunk) => {
     result.push(chunk)
   })).on('close', () => {
     assert.equal(result.length, 4)
-    assert.equal(result[0], '\*\n')
-    assert.equal(result[1], '* Hello\n')
-    assert.equal(result[2], '* World\n')
-    assert.equal(result[3], '*/\n')
+    assert.equal(result[0], '/*\n')
+    assert.equal(result[1], ' * Hello\n')
+    assert.equal(result[2], ' * World\n')
+    assert.equal(result[3], ' */\n')
     assert.end()
   })
 })

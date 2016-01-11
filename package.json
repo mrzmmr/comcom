@@ -1,6 +1,6 @@
 {
   "name": "comcom",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A simple and easy to use comment to comment parser",
   "main": "dst/lib/index.js",
   "scripts": {
