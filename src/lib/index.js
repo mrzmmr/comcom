@@ -4,11 +4,7 @@
  * # install
  *
  * ```
- * npm install -g comcom
- *
- * // Or
- *
- * npm install --save comcom
+ * npm install [-g] comcom
  * ```
  *
  * @module comcom
@@ -17,38 +13,23 @@
  */
 
 /*
- * Imports
+ * Dependencies
  */
-import {through} from 'through'
-import {defop} from 'defop'
 
-/**
- * @name options
- * @property {String} from - Defaults to null
- * @property {String} to - Defaults to null
- */
-let options = {
-  from: null,
-  to: null
-}
+require('string.prototype.startswith')
+require('string.prototype.endswith')
+
+let through = require('through')
+let config = require('./config')
+let Stream = require('stream')
+let defop = require('defop')
 
 /*
- * Buffer
+ * Buffer to hold comments to be worked on
  */
 let buffer = []
 
-let switched = null
-
-/*
- * C style single line comment
- */
-export const CSTYLE_SINGLE = /\s*(?=\/)\/(?=\/)\//g
-
-/*
- * C style multiple line comment
- */
-export const CSTYLE_MULTIPLE_BEG = /\s*(?=\/)\/(?=\*)\**/g
-export const CSTYLE_MULTIPLE_END = /\s*(?=\*)\**(?=\/)\//g
+let switched = false
 
 export function split() {
   return through(function (chunk) {
@@ -60,29 +41,34 @@ export function split() {
   })
 }
 
-export function from(comment) {
+export function from(options, config) {
   return through(function (chunk) {
-    var self = this
-
-    if (comment.multi) {
-      if (chunk.indexOf(comment.multi.begin) > -1) {
-        return switched = true
+    if (options.type === 'multi') {
+      if (!switched) {
+        if (chunk.startsWith(chunk.match(config[options.class].multi.begin.match))) {
+          if (!chunk.endsWith(chunk.match(config[options.class].multi.begin.match))) {
+            buffer.push(chunk)
+          }
+          return switched = true
+        }
       }
-      else if (chunk.indexOf(comment.multi.end) > -1) {
-        return switched = false
-      }
-      else {
-        if (switched) {
+      else if (switched) {
+        if (chunk.endsWith(chunk.match(config[options.class].multi.end.match))) {
+          if (!chunk.startsWith(chunk.match(config[options.class].multi.end.match))) {
+            buffer.push(chunk)
+          }
+          return switched = false
+        }
+        else {
           return buffer.push(chunk)
         }
-        return this.queue(chunk)
       }
     }
-    else {
-      if (chunk.indexOf(comment.single) > -1) {
+    else if (options.type === 'single') {
+      if (chunk.startsWith(chunk.match(config[options.class].single.match))) {
         return buffer.push(chunk)
       }
-      return this.queue(chunk)
     }
+    return this.queue(chunk)
   })
 }

@@ -1,57 +1,60 @@
-import 'string.prototype.startswith'
-import * as lib from '../lib/index'
-import * as Stream from 'stream'
-import {through} from 'through'
-import * as tap from 'tap'
+require('string.prototype.startswith')
+require('string.prototype.endswith')
+
+let config = require('../lib/config')
+let comcom = require('../lib/index')
+
+let through = require('through')
+let Stream = require('stream')
+let tap = require('tap')
 
 /*
  * Regex tests
  */
-tap.test('Regex#CSTYLE_SINGLE', (assert) => {
-  let t1 = '// Hello'
-  let t2 = '  // world'
+tap.test('config.c.single.match', (assert) => {
+  let a = '// Hello'
+  let b = '  // world'
 
-  assert.ok(t1.startsWith(t1.match(lib.CSTYLE_SINGLE)[0]))
-  assert.ok(t2.startsWith(t2.match(lib.CSTYLE_SINGLE)[0]))
+  assert.ok(a.startsWith(a.match(config.c.single.match)[0]))
+  assert.ok(b.startsWith(b.match(config.c.single.match)[0]))
   assert.end()
 })
 
-tap.test('Regex#CSTYLE_MULTIPLE', (assert) => {
-  let t1 = '/* Hello'
-  let t2 = '/** World'
-  let t3 = '  /* Hello'
-  let t4 = '  /** World'
-  let t5 = '*/'
-  let t6 = '**/'
-  let t7 = '  */'
-  let t8 = '  **/'
+tap.test('config.c.multi.match', (assert) => {
+  let a = '/* Hello'
+  let b = '/** World'
+  let c = '  /* Hello'
+  let d = '  /** World'
+  let e = '*/'
+  let f = '**/'
+  let g = '  */'
+  let h = '  **/'
 
-  assert.ok(t1.startsWith(t1.match(lib.CSTYLE_MULTIPLE_BEG)[0]))
-  assert.ok(t2.startsWith(t2.match(lib.CSTYLE_MULTIPLE_BEG)[0]))
-  assert.ok(t3.startsWith(t3.match(lib.CSTYLE_MULTIPLE_BEG)[0]))
-  assert.ok(t4.startsWith(t4.match(lib.CSTYLE_MULTIPLE_BEG)[0]))
-  assert.ok(t5.startsWith(t5.match(lib.CSTYLE_MULTIPLE_END)[0]))
-  assert.ok(t6.startsWith(t6.match(lib.CSTYLE_MULTIPLE_END)[0]))
-  assert.ok(t7.startsWith(t7.match(lib.CSTYLE_MULTIPLE_END)[0]))
-  assert.ok(t8.startsWith(t8.match(lib.CSTYLE_MULTIPLE_END)[0]))
+  assert.ok(a.startsWith(a.match(config.c.multi.begin.match)[0]))
+  assert.ok(b.startsWith(b.match(config.c.multi.begin.match)[0]))
+  assert.ok(c.startsWith(c.match(config.c.multi.begin.match)[0]))
+  assert.ok(d.startsWith(d.match(config.c.multi.begin.match)[0]))
+  assert.ok(e.startsWith(e.match(config.c.multi.end.match)[0]))
+  assert.ok(f.startsWith(f.match(config.c.multi.end.match)[0]))
+  assert.ok(g.startsWith(g.match(config.c.multi.end.match)[0]))
+  assert.ok(h.startsWith(h.match(config.c.multi.end.match)[0]))
   assert.end()
 })
 
 /*
- * lib#split
+ * comcom#split
  */
 
-tap.test('lib#split', (assert) => {
+tap.test('comcom#split', (assert) => {
   let stream = new Stream.Readable()
   let result = []
 
   stream.push('/*\n * Hello\n * World\n */')
-
   stream.push(null)
-
-  stream.pipe(lib.split()).pipe(through((chunk) => {
+  stream.pipe(comcom.split()).pipe(through((chunk) => {
     result.push(chunk)
-  })).on('close', () => {
+  }))
+  .on('close', () => {
     assert.equal(result.length, 4)
     assert.equal(result[0], '/*\n')
     assert.equal(result[1], ' * Hello\n')
