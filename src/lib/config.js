@@ -1,8 +1,4 @@
 const config = {
-
-  /*
-   * C style comments
-   */
   'c': {
     single: {
       value: '//',

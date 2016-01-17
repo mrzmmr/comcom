@@ -3,7 +3,6 @@ require('string.prototype.endswith')
 
 let config = require('../lib/config')
 let comcom = require('../lib/index')
-
 let through = require('through')
 let Stream = require('stream')
 let tap = require('tap')
@@ -11,9 +10,13 @@ let tap = require('tap')
 /*
  * Regex tests
  */
+
+/*
+ * config.c regexs
+ */
 tap.test('config.c.single.match', (assert) => {
   let a = '// Hello'
-  let b = '  // world'
+    , b = '  // world'
 
   assert.ok(a.startsWith(a.match(config.c.single.match)[0]))
   assert.ok(b.startsWith(b.match(config.c.single.match)[0]))
@@ -22,13 +25,13 @@ tap.test('config.c.single.match', (assert) => {
 
 tap.test('config.c.multi.match', (assert) => {
   let a = '/* Hello'
-  let b = '/** World'
-  let c = '  /* Hello'
-  let d = '  /** World'
-  let e = '*/'
-  let f = '**/'
-  let g = '  */'
-  let h = '  **/'
+    , b = '/** World'
+    , c = '  /* Hello'
+    , d = '  /** World'
+    , e = '*/'
+    , f = '**/'
+    , g = '  */'
+    , h = '  **/'
 
   assert.ok(a.startsWith(a.match(config.c.multi.begin.match)[0]))
   assert.ok(b.startsWith(b.match(config.c.multi.begin.match)[0]))
@@ -47,7 +50,7 @@ tap.test('config.c.multi.match', (assert) => {
 
 tap.test('comcom#split', (assert) => {
   let stream = new Stream.Readable()
-  let result = []
+    , result = []
 
   stream.push('/*\n * Hello\n * World\n */')
   stream.push(null)

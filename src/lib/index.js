@@ -20,16 +20,11 @@ require('string.prototype.startswith')
 require('string.prototype.endswith')
 
 let through = require('through')
-let config = require('./config')
-let Stream = require('stream')
-let defop = require('defop')
-
-/*
- * Buffer to hold comments to be worked on
- */
-let buffer = []
-
-let switched = false
+  , config = require('./config')
+  , Stream = require('stream')
+  , defop = require('defop')
+  , switched = false
+  , buffer = []
 
 export function split() {
   return through(function (chunk) {
