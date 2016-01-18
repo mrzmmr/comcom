@@ -8,7 +8,7 @@
  * ```
  *
  * @module comcom
- * @version 1.0.7
+ * @version 1.0.8
  * @author mrzmmr
  */
 
@@ -38,32 +38,41 @@ export function split() {
 
 export function from(options, config) {
   return through(function (chunk) {
-    if (options.type === 'multi') {
-      if (!switched) {
-        if (chunk.startsWith(chunk.match(config[options.class].multi.begin.match)[0])) {
-          if (!chunk.endsWith(chunk.match(config[options.class].multi.begin.match)[0])) {
-            buffer.push(chunk)
-          }
-          return switched = true
+
+    if (options.type === 'multiple' && switched) {
+
+      // The problem is how to handle the '\n'
+      let match = config[options.class]['multiple']['end']['match']
+
+      if (chunk.match(match) && chunk.endsWith(chunk.match(match)[0])) {
+        if (!chunk.startsWith(chunk.match(match)[0])) {
+          buffer.push(chunk)
         }
+        switched = false
       }
-      else if (switched) {
-        if (chunk.endsWith(chunk.match(config[options.class].multi.end.match)[0])) {
-          if (!chunk.startsWith(chunk.match(config[options.class].multi.end.match)[0])) {
-            buffer.push(chunk)
-          }
-          return switched = false
-        }
-        else {
-          return buffer.push(chunk)
-        }
+      else {
+        buffer.push(chunk)
       }
     }
+
+    else if (options.type === 'multiple' && !switched) {
+
+      // The problem is how to handle '\n'
+      let match = config[options.class]['multiple']['begin']['match']
+
+      if (chunk.match(match) && chunk.startsWith(chunk.match(match)[0])) {
+        if (!chunk.endsWith(chunk.match(match)[0])) {
+          buffer.push(chunk)
+        }
+        switched = true
+      }
+    }
+
     else if (options.type === 'single') {
-      if (chunk.startsWith(chunk.match(config[options.class].single.match)[0])) {
-        return buffer.push(chunk)
-      }
     }
-    return this.queue(chunk)
+
+    else {
+      this.queue(chunk)
+    }
   })
 }

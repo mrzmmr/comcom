@@ -24,23 +24,40 @@ tap.test('config.c.single.match', (assert) => {
 })
 
 tap.test('config.c.multi.match', (assert) => {
-  let a = '/* Hello'
-    , b = '/** World'
-    , c = '  /* Hello'
-    , d = '  /** World'
-    , e = '*/'
-    , f = '**/'
-    , g = '  */'
-    , h = '  **/'
+  let test = {
+    a: '/*'
+  , b: '/**'
+  , c: '/* test'
+  , d: '/** test'
+  , e: '  /*'
+  , f: '  /**'
+  , g: '  /* test'
+  , h: '  /** test'
 
-  assert.ok(a.startsWith(a.match(config.c.multi.begin.match)[0]))
-  assert.ok(b.startsWith(b.match(config.c.multi.begin.match)[0]))
-  assert.ok(c.startsWith(c.match(config.c.multi.begin.match)[0]))
-  assert.ok(d.startsWith(d.match(config.c.multi.begin.match)[0]))
-  assert.ok(e.startsWith(e.match(config.c.multi.end.match)[0]))
-  assert.ok(f.startsWith(f.match(config.c.multi.end.match)[0]))
-  assert.ok(g.startsWith(g.match(config.c.multi.end.match)[0]))
-  assert.ok(h.startsWith(h.match(config.c.multi.end.match)[0]))
+  , i: '*/'
+  , j: '**/'
+  , k: 'test */'
+  , l: 'test **/'
+  , m: '  */'
+  , n: '  **/'
+  , o: '  test */'
+  , p: '  test **/'
+  }
+
+  for (let i = 97; i < 97 + 8; i++) {
+    let i = String.fromCharCode(i)
+    let match = test[i].match(config.c.multi.begin.match)[0]
+
+    assert.ok(test[i].startsWith(match))
+  }
+
+  for (let i = 97 + 8; i < 97 + 8 + 8; i++) {
+    let i = String.fromCharCode(i)
+    let match = test[i].match(config.c.multi.begin.match)[0]
+
+    assert.ok(test[i].endsWith(match))
+  }
+
   assert.end()
 })
 

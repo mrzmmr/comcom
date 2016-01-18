@@ -4,14 +4,14 @@ const config = {
       value: '//',
       match: /\s*(?=\/)\/(?=\/)\//g
     },
-    multi: {
+    multiple: {
       begin: {
         value: '/*',
-        match: /\s*(?=\/)\/(?=\*)\**/g
+        match: /\s*(?=\/)\/(?=\**)\**(?=\n)\n/g
       },
       end: {
         value: '*/',
-        match: /\s*(?=\*)\**(?=\/)\//g
+        match: /\s*(?=\**)\**(?=\/)\/(?=\n)\n/g
       }
     }
   }
