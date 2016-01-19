@@ -32,44 +32,33 @@ function split() {
 function from(options, config) {
   return through(function (chunk) {
     if (options.type === 'multiple') {
-
-      if (!switched) {
-        if (chunk.match(config[options.class]['multiple']['begin'].match) &&
-          chunk.startsWith(config[options.class]['multiple']['begin'].match[0])) {
-          if (!(chunk.match(config[options.class]['multiple']['end'].match) &&
-            chunk.endsWith(config[options.class]['multiple']['end'].match[0] + '\n'))) {
-            switched = true
-          }
-
-          if (!(chunk.endsWith(config[options.class]['multiple']['begin'].match[0] + '\n'))) {
-            buffer.push(chunk)
-          }
-        }
-      }
+      let matchb = config[options.class].multiple.begin.match
+      let matche = config[options.class].multiple.end.match
 
       if (switched) {
-        if (chunk.match(config[options.class]['multiple']['end'].match) &&
-          chunk.endsWith(config[options.class]['multiple']['end'].match[0] + '\n')) {
-          if (!(chunk.startsWith(config[options.class]['multiple']['end'].match[0]))) {
+        if (chunk.match(matche)) {
+          if (!chunk.startsWith(chunk.match(matche)[0]) &&
+            chunk.endsWith(chunk.match(matche)[0])) {
             buffer.push(chunk)
           }
-          switched = false
+          return switched = false
         }
-        else {
-          buffer.push(chunk)
-        }
+        return buffer.push(chunk)
       }
-    }
-    else if (options.type === 'single') {
-    }
-    else {
-      return this.queue(chunk)
+      if (!switched) {
+        if (chunk.match(matchb)) {
+          if (!chunk.endsWith(chunk.match(matchb)[0]) &&
+            chunk.startsWith(chunk.match(matchb)[0])) {
+            buffer.push(chunk)
+          }
+          return switched = true
+        }
+        this.queue(chunk)
+      }
     }
   })
 }
 
-({class: 'c', type: 'multiple'}, config))).on('close', function () {
-  buffer.map((item) => {
-    console.log(item)
-  })
+({class: 'c', type: 'multiple'}, config))).pipe(process.stdout).on('close', function () {
+  console.log(buffer)
 })
