@@ -21,10 +21,14 @@ require('string.prototype.endswith')
 
 let through = require('through')
   , config = require('./config')
-  , Stream = require('stream')
   , defop = require('defop')
   , switched = false
   , buffer = []
+
+let options = {
+  class: null,
+  type: null
+}
 
 export function split() {
   return through(function (chunk) {
@@ -36,43 +40,34 @@ export function split() {
   })
 }
 
-export function from(options, config) {
+export function from(ops, config) {
+  ops = defop(options)
+
   return through(function (chunk) {
+    if (ops.type === 'multiple') {
+      let matchb = config[ops.class].multiple.begin.match
+      let matche = config[ops.class].multiple.end.match
 
-    if (options.type === 'multiple' && switched) {
-
-      // The problem is how to handle the '\n'
-      let match = config[options.class]['multiple']['end']['match']
-
-      if (chunk.match(match) && chunk.endsWith(chunk.match(match)[0])) {
-        if (!chunk.startsWith(chunk.match(match)[0])) {
-          buffer.push(chunk)
+      if (switched) {
+        if (chunk.match(matche)) {
+          if (!chunk.startsWith(chunk.match(matche)[0]) &&
+            chunk.endsWith(chunk.match(matche)[0])) {
+            buffer.push(chunk)
+          }
+          return switched = false
         }
-        switched = false
+        return buffer.push(chunk)
       }
-      else {
-        buffer.push(chunk)
-      }
-    }
-
-    else if (options.type === 'multiple' && !switched) {
-
-      // The problem is how to handle '\n'
-      let match = config[options.class]['multiple']['begin']['match']
-
-      if (chunk.match(match) && chunk.startsWith(chunk.match(match)[0])) {
-        if (!chunk.endsWith(chunk.match(match)[0])) {
-          buffer.push(chunk)
+      if (!switched) {
+        if (chunk.match(matchb)) {
+          if (!chunk.endsWith(chunk.match(matchb)[0]) &&
+            chunk.startsWith(chunk.match(matchb)[0])) {
+            buffer.push(chunk)
+          }
+          return switched = true
         }
-        switched = true
+        this.queue(chunk)
       }
-    }
-
-    else if (options.type === 'single') {
-    }
-
-    else {
-      this.queue(chunk)
     }
   })
 }
