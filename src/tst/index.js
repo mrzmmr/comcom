@@ -23,37 +23,37 @@ tap.test('config.c.single.match', (assert) => {
   assert.end()
 })
 
-tap.test('config.c.multi.match', (assert) => {
+tap.test('config.c.multiple.match', (assert) => {
   let test = {
-    a: '/*'
-  , b: '/**'
-  , c: '/* test'
-  , d: '/** test'
-  , e: '  /*'
-  , f: '  /**'
-  , g: '  /* test'
-  , h: '  /** test'
+    a: '/*\n'
+  , b: '/**\n'
+  , c: '/* test\n'
+  , d: '/** test\n'
+  , e: '  /*\n'
+  , f: '  /**\n'
+  , g: '  /* test\n'
+  , h: '  /** test\n'
 
-  , i: '*/'
-  , j: '**/'
-  , k: 'test */'
-  , l: 'test **/'
-  , m: '  */'
-  , n: '  **/'
-  , o: '  test */'
-  , p: '  test **/'
+  , i: '*/\n'
+  , j: '**/\n'
+  , k: 'test */\n'
+  , l: 'test **/\n'
+  , m: '  */\n'
+  , n: '  **/\n'
+  , o: '  test */\n'
+  , p: '  test **/\n'
   }
 
   for (let i = 97; i < 97 + 8; i++) {
     let i = String.fromCharCode(i)
-    let match = test[i].match(config.c.multi.begin.match)[0]
+    let match = test[i].match(config.c.multiple.begin.match)[0]
 
     assert.ok(test[i].startsWith(match))
   }
 
   for (let i = 97 + 8; i < 97 + 8 + 8; i++) {
     let i = String.fromCharCode(i)
-    let match = test[i].match(config.c.multi.begin.match)[0]
+    let match = test[i].match(config.c.multiple.begin.match)[0]
 
     assert.ok(test[i].endsWith(match))
   }

@@ -4,18 +4,17 @@
  * # install
  *
  * ```
- * npm install [-g] comcom
+ * npm install [ -g ] comcom
  * ```
  *
  * @module comcom
- * @version 1.0.8
+ * @version 1.0.10
  * @author mrzmmr
  */
 
 /*
  * Dependencies
  */
-
 require('string.prototype.startswith')
 require('string.prototype.endswith')
 
@@ -30,6 +29,11 @@ let options = {
   type: null
 }
 
+/**
+ * split
+ *
+ * @return {undefined}
+ */
 export function split() {
   return through(function (chunk) {
     let self = this
@@ -40,34 +44,48 @@ export function split() {
   })
 }
 
-export function from(ops, config) {
-  ops = defop(options)
+/**
+ * from
+ *
+ * @param ops
+ * @param con
+ * @return {undefined}
+ */
+export function from(ops, con) {
+  ops = defop(ops, options)
+  con = defop(con, config)
 
   return through(function (chunk) {
     if (ops.type === 'multiple') {
-      let matchb = config[ops.class].multiple.begin.match
-      let matche = config[ops.class].multiple.end.match
+      let matchb = con[ops.class].multiple.begin.match
+        , matche = con[ops.class].multiple.end.match
 
       if (switched) {
         if (chunk.match(matche)) {
-          if (!chunk.startsWith(chunk.match(matche)[0]) &&
-            chunk.endsWith(chunk.match(matche)[0])) {
-            buffer.push(chunk)
+          if (chunk.endsWith(chunk.match(matche)[0])) {
+            switched = false
+
+            return buffer.push(chunk)
           }
-          return switched = false
         }
+
         return buffer.push(chunk)
       }
+
       if (!switched) {
         if (chunk.match(matchb)) {
-          if (!chunk.endsWith(chunk.match(matchb)[0]) &&
-            chunk.startsWith(chunk.match(matchb)[0])) {
-            buffer.push(chunk)
+          if (chunk.startsWith(chunk.match(matchb)[0])) {
+            switched = true
+            if (chunk.match(matche) && chunk.endsWith(matche)[0]) {
+              switched = false
+            }
+
+            return buffer.push(chunk)
           }
-          return switched = true
         }
-        this.queue(chunk)
       }
+
+      return this.queue(chunk)
     }
   })
 }
