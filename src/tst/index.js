@@ -64,7 +64,6 @@ tap.test('config.c.multiple.match', (assert) => {
 /*
  * comcom#split
  */
-
 tap.test('comcom#split', (assert) => {
   let stream = new Stream.Readable()
     , result = []
@@ -80,6 +79,33 @@ tap.test('comcom#split', (assert) => {
     assert.equal(result[1], ' * Hello\n')
     assert.equal(result[2], ' * World\n')
     assert.equal(result[3], ' */\n')
+    assert.end()
+  })
+})
+
+/*
+ * comcom#from: class: c, type: multiple
+ */
+tap.test('comcom#', (assert) => {
+  let stream = new Stream.Readable()
+
+  stream.push('/**\n')
+  stream.push(' * @param {Number} a\n')
+  stream.push(' * @param {Number} b\n')
+  stream.push(' */\n')
+  stream.push('function test(a, b) {\n')
+  stream.push('  return a + b\n')
+  stream.push('}\n')
+  stream.push(null)
+
+  stream.pipe(comcom.split())
+  .pipe(comcom.from({class: 'c', type: 'multiple'}, comcom.config))
+  .on('close', () => {
+
+    assert.equal(comcom.buffer[0], '>>\n')
+    assert.equal(comcom.buffer[1], '> @param {Number} a\n')
+    assert.equal(comcom.buffer[2], '> @param {Number} b\n')
+    assert.equal(comcom.buffer[3], ' <<\n')
     assert.end()
   })
 })

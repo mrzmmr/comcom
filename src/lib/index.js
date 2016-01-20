@@ -8,7 +8,7 @@
  * ```
  *
  * @module comcom
- * @version 1.0.10
+ * @version 1.0.11
  * @author mrzmmr
  */
 
@@ -22,7 +22,8 @@ let through = require('through')
   , config = require('./config')
   , defop = require('defop')
   , switched = false
-  , buffer = []
+
+export let buffer = []
 
 let options = {
   class: null,
@@ -64,23 +65,34 @@ export function from(ops, con) {
         if (chunk.match(matche)) {
           if (chunk.endsWith(chunk.match(matche)[0])) {
             switched = false
+            chunk = chunk.replace(con[ops.class].multiple.end.value, '<<')
 
-            return buffer.push(chunk)
+            if (chunk !== '\n') {
+              return buffer.push(chunk)
+            }
           }
         }
+        chunk = chunk.replace(con[ops.class].multiple.mid.value, '>')
 
-        return buffer.push(chunk)
+        if (chunk !== '\n') {
+          return buffer.push(chunk)
+        }
       }
 
-      if (!switched) {
+      else if (!switched) {
         if (chunk.match(matchb)) {
           if (chunk.startsWith(chunk.match(matchb)[0])) {
             switched = true
+            chunk = chunk.replace(con[ops.class].multiple.begin.value, '>>')
+
             if (chunk.match(matche) && chunk.endsWith(matche)[0]) {
               switched = false
+              chunk = chunk.replace(con[ops.class].multiple.end.value, '<<')
             }
 
-            return buffer.push(chunk)
+            if (chunk !== '\n') {
+              return buffer.push(chunk)
+            }
           }
         }
       }
