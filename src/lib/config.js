@@ -6,12 +6,15 @@ const config = {
     },
     multiple: {
       begin: {
-        value: '/*',
+        value: /(?=\/)\/(?=\**)\**/g,
         match: /\s*(?=\/)\/(?=\**)\**(?=\n)\n/g
       },
       end: {
-        value: '*/',
+        value: /\**(?=\/)\//g,
         match: /\s*(?=\**)\**(?=\/)\/(?=\n)\n/g
+      },
+      mid: {
+        value: ' *'
       }
     }
   }
