@@ -1,13 +1,33 @@
 const config = {
+  '_': {
+    single: {
+      value: />/g,
+      match: /\s*(?=>)>/g,
+      space: /\s*(?=>)/g,
+      string: '>'
+    },
+    multiple: {
+      beg: {
+        value: />(?=>)>/g,
+        match: /\s*(?=>)>(?=>)>/g,
+        string: '>>'
+      },
+      end: {
+        value: /<(?=<)</g,
+        match: /\s*(?=<)<(?=<)</g,
+        string: '<<'
+      }
+    }
+  },
   'c': {
     single: {
-      value: '//',
+      value: /\/(?=\/)\//g,
       match: /\s*(?=\/)\/(?=\/)\//g,
       string: '//'
     },
     multiple: {
-      begin: {
-        value: /(?=\/)\/(?=\**)\**/g,
+      beg: {
+        value: /\/(?=\**)\**/g,
         match: /\s*(?=\/)\/(?=\**)\**/g,
         string: '/**'
       },
@@ -17,7 +37,6 @@ const config = {
         string: '*/'
       },
       mid: {
-        value: ' *',
         string: ' *'
       }
     }

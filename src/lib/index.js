@@ -8,7 +8,7 @@
  * ```
  *
  * @module comcom
- * @version 1.3.0
+ * @version 1.3.1
  * @author mrzmmr
  */
 
@@ -30,12 +30,18 @@ let options = {
   type: null
 }
 
+
+require('fs').createReadStream(__dirname + '/../../test2.js', {
+  encoding: 'utf8'
+}).pipe(
+
+
 /**
  * split
  *
  * @return {undefined}
  */
-export function split() {
+function split() {
   return through(function (chunk) {
     let self = this
 
@@ -45,44 +51,55 @@ export function split() {
   })
 }
 
+
+()).pipe(
+
+
 /**
  * from
  *
- * @param ops
- * @param con
+ * @param {Object} ops -
+ * @param {Object} con -
  * @return {undefined}
  */
-export function from(ops, con) {
+function from(ops, con) {
   ops = defop(ops, options)
   con = defop(con, config)
 
   return through(function (chunk) {
+    let mbeg = con[ops.class].multiple.beg
+      , mend = con[ops.class].multiple.end
+      , mmid = con[ops.class].multiple.mid
+      , dmbeg = con._.multiple.beg
+      , dmend = con._.multiple.end
+      , dmmid = con._.multiple.mid
+      , single = con[ops.class].single
+      , dsingle = con._.single
+
     if (ops.type === 'multiple') {
-      let matchBegin = con[ops.class].multiple.begin.match
-        , matchEnd = con[ops.class].multiple.end.match
 
       if (switched) {
-        if (chunk.match(matchEnd)) {
-          if (chunk.endsWith(chunk.match(matchEnd)[0] + '\n')) {
-            chunk = chunk.replace(con[ops.class].multiple.end.value, '<<')
+        if (chunk.match(mend.match)) {
+          if (chunk.endsWith(chunk.match(mend.match)[0] + '\n')) {
+            chunk = chunk.replace(mend.value, dmend.string)
             switched = false
 
             return buffer.push(chunk)
           }
         }
-        chunk = chunk.replace(con[ops.class].multiple.mid.value, '>')
+        chunk = chunk.replace(mmid.string, dsingle.string)
 
         return buffer.push(chunk)
       }
 
       if (!switched) {
-        if (chunk.match(matchBegin)) {
-          if (chunk.startsWith(chunk.match(matchBegin)[0])) {
-            chunk = chunk.replace(con[ops.class].multiple.begin.value, '>>')
+        if (chunk.match(mbeg.match)) {
+          if (chunk.startsWith(chunk.match(mbeg.match)[0])) {
+            chunk = chunk.replace(mbeg.value, dmbeg.string)
             switched = true
 
-            if (chunk.match(matchEnd) && chunk.endsWith(matchEnd)[0] + '\n') {
-              chunk = chunk.replace(con[ops.class].multiple.end.value, '<<')
+            if (chunk.match(mend.match) && chunk.endsWith(mend.match)[0] + '\n') {
+              chunk = chunk.replace(mend.value, dmend.string)
               switched = false
             }
 
@@ -94,9 +111,9 @@ export function from(ops, con) {
       return this.queue(chunk)
     }
     else {
-      if (chunk.match(con[ops.class].single.match)) {
-        if (chunk.startsWith(chunk.match(con[ops.class].single.match)[0])) {
-          return buffer.push(chunk.replace(con[ops.class].single.string, '>'))
+      if (chunk.match(single.match)) {
+        if (chunk.startsWith(chunk.match(single.match)[0])) {
+          return buffer.push(chunk.replace(single.string, dsingle.string))
         }
       }
 
@@ -105,46 +122,59 @@ export function from(ops, con) {
   })
 }
 
+
+({class: 'c', type: 'single'})).pipe(
+
+
 /**
  * to
  *
- * @param ops
- * @param con
+ * @param {Object} ops -
+ * @param {Object} con -
  * @return {undefined}
  */
-export function to(ops, con) {
+function to(ops, con) {
   ops = defop(ops, options)
   con = defop(con, config)
 
   return through(function (chunk) {
     let com
+      , dmbeg = con._.multiple.beg
+      , dmend = con._.multiple.end
+      , dsingle = con._.single
+      , single = con[ops.class].single
+      , mbeg = con[ops.class].multiple.beg
+      , mend = con[ops.class].multiple.end
+      , mmid = con[ops.class].multiple.mid
+
 
     if (buffer.length > 0) {
       if (ops.type === 'single') {
+
         com = buffer.filter((comment) => {
-          if (!(comment.match(/\s*(?=<)<(?=<)<(?=\n)\n/g) || 
-            comment.match(/\s*(?=>)>(?=>)>(?=\n)/g))) {
+          if (!(comment.match(dmend.match) || 
+            comment.match(dmbeg.match))) {
             return comment
           }
         }).map((comment) => {
-          return comment.replace('>', con[ops.class].single.string)
+          return comment.replace(dsingle.string, single.string)
         })
         .join('')
       }
 
       else {
         com = buffer.map((comment, index, array) => {
-          if (comment.match(/\s*(?=>)>/g) && comment.startsWith(comment.match(/\s*(?=>)>/g)[0])) {
-            let indent = comment.match(/\s*(?=>)/g)[0]
+          if (comment.match(dsingle.match) && comment.startsWith(comment.match(dsingle.match)[0])) {
+            let indent = comment.match(dsingle.space)[0]
 
             if (index === 0) {
-              return comment.replace('>', con[ops.class].multiple.begin.string + '\n' + indent + con[ops.class].multiple.mid.string)
+              return comment.replace(dsingle.string, mbeg.string + '\n' + indent + mmid.string)
             }
             else if (index === array.length - 1) {
-              return comment = comment.replace('>', con[ops.class].multiple.mid.string) + indent + ' ' + con[ops.class].multiple.end.string + '\n'
+              return comment = comment.replace(dsingle.string, mmid.string) + indent + ' ' + mend.string + '\n'
             }
             else {
-              return comment.replace('>', con[ops.class].multiple.mid.string)
+              return comment.replace('>', mmid.string)
             }
           }
         })
@@ -157,3 +187,6 @@ export function to(ops, con) {
     return this.queue(chunk)
   })
 }
+
+
+({class: 'c', type: 'multiple'})).pipe(process.stdout)
