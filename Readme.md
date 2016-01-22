@@ -10,7 +10,7 @@ TODO: Description
 
 **Meta**
 
--   **version**: 1.0.11
+-   **version**: 1.3.0
 -   **author**: mrzmmr
 
 ## from

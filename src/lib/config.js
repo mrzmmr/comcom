@@ -2,19 +2,23 @@ const config = {
   'c': {
     single: {
       value: '//',
-      match: /\s*(?=\/)\/(?=\/)\//g
+      match: /\s*(?=\/)\/(?=\/)\//g,
+      string: '//'
     },
     multiple: {
       begin: {
         value: /(?=\/)\/(?=\**)\**/g,
-        match: /\s*(?=\/)\/(?=\**)\**(?=\n)\n/g
+        match: /\s*(?=\/)\/(?=\**)\**/g,
+        string: '/**'
       },
       end: {
         value: /\**(?=\/)\//g,
-        match: /\s*(?=\**)\**(?=\/)\/(?=\n)\n/g
+        match: /\s*(?=\**)\**(?=\/)\//g,
+        string: '*/'
       },
       mid: {
-        value: ' *'
+        value: ' *',
+        string: ' *'
       }
     }
   }
