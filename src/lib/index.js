@@ -8,7 +8,7 @@
  * ```
  *
  * @module comcom
- * @version 1.3.1
+ * @version 1.3.2
  * @author mrzmmr
  */
 
@@ -21,172 +21,158 @@ require('string.prototype.endswith')
 let through = require('through')
   , config = require('./config')
   , defop = require('defop')
-  , switched = false
 
-export let buffer = []
+export default class Comcom {
 
-let options = {
-  class: null,
-  type: null
-}
+  constructor() {
+    this.switched = false
+    this.buffer = []
+    this.options = {
+      class: null,
+      type: null
+    }
+  }
 
+  /**
+   * split
+   *
+   * @return {undefined}
+   */
+  split() {
+    return through(function (chunk) {
+      let self = this
 
-require('fs').createReadStream(__dirname + '/../../test2.js', {
-  encoding: 'utf8'
-}).pipe(
+      return chunk.toString().split('\n').map((line) => {
+        return self.queue(line + '\n')
+      })
+    })
+  }
 
+  /**
+   * from
+   *
+   * @param {Object} ops -
+   * @param {Object} con -
+   * @return {undefined}
+   */
+  from(ops, con) {
 
-/**
- * split
- *
- * @return {undefined}
- */
-function split() {
-  return through(function (chunk) {
     let self = this
 
-    return chunk.toString().split('\n').map((line) => {
-      return self.queue(line + '\n')
-    })
-  })
-}
+    ops = defop(ops, self.options)
+    con = defop(con, config)
 
+    return through(function (chunk) {
 
-()).pipe(
+      let mul = con[ops.class].multiple
+        , sin = con[ops.class].single
+        , dmul = con._.multiple
+        , dsin = con._.single
 
+      if (ops.type === 'multiple') {
 
-/**
- * from
- *
- * @param {Object} ops -
- * @param {Object} con -
- * @return {undefined}
- */
-function from(ops, con) {
-  ops = defop(ops, options)
-  con = defop(con, config)
+        if (self.switched) {
+          if (chunk.match(mul.end.match)) {
+            if (chunk.endsWith(chunk.match(mul.end.match)[0] + '\n')) {
+              chunk = chunk.replace(mul.end.value, dmul.end.string)
+              self.switched = false
 
-  return through(function (chunk) {
-    let mbeg = con[ops.class].multiple.beg
-      , mend = con[ops.class].multiple.end
-      , mmid = con[ops.class].multiple.mid
-      , dmbeg = con._.multiple.beg
-      , dmend = con._.multiple.end
-      , dmmid = con._.multiple.mid
-      , single = con[ops.class].single
-      , dsingle = con._.single
-
-    if (ops.type === 'multiple') {
-
-      if (switched) {
-        if (chunk.match(mend.match)) {
-          if (chunk.endsWith(chunk.match(mend.match)[0] + '\n')) {
-            chunk = chunk.replace(mend.value, dmend.string)
-            switched = false
-
-            return buffer.push(chunk)
-          }
-        }
-        chunk = chunk.replace(mmid.string, dsingle.string)
-
-        return buffer.push(chunk)
-      }
-
-      if (!switched) {
-        if (chunk.match(mbeg.match)) {
-          if (chunk.startsWith(chunk.match(mbeg.match)[0])) {
-            chunk = chunk.replace(mbeg.value, dmbeg.string)
-            switched = true
-
-            if (chunk.match(mend.match) && chunk.endsWith(mend.match)[0] + '\n') {
-              chunk = chunk.replace(mend.value, dmend.string)
-              switched = false
+              return self.buffer.push(chunk)
             }
+          }
+          chunk = chunk.replace(mul.mid.string, dsin.string)
 
-            return buffer.push(chunk)
+          return self.buffer.push(chunk)
+        }
+
+        if (!self.switched) {
+          if (chunk.match(mul.beg.match)) {
+            if (chunk.startsWith(chunk.match(mul.beg.match)[0])) {
+              chunk = chunk.replace(mul.beg.value, dmul.beg.string)
+              self.switched = true
+
+              if (chunk.match(mul.end.match) && chunk.endsWith(chunk.match(mul.end.match)[0] + '\n')) {
+                chunk = chunk.replace(mul.end.value, dmul.end.string)
+                self.switched = false
+              }
+
+              return self.buffer.push(chunk)
+            }
           }
         }
+
+        return this.queue(chunk)
       }
-
-      return this.queue(chunk)
-    }
-    else {
-      if (chunk.match(single.match)) {
-        if (chunk.startsWith(chunk.match(single.match)[0])) {
-          return buffer.push(chunk.replace(single.string, dsingle.string))
-        }
-      }
-
-      return this.queue(chunk)
-    }
-  })
-}
-
-
-({class: 'c', type: 'single'})).pipe(
-
-
-/**
- * to
- *
- * @param {Object} ops -
- * @param {Object} con -
- * @return {undefined}
- */
-function to(ops, con) {
-  ops = defop(ops, options)
-  con = defop(con, config)
-
-  return through(function (chunk) {
-    let com
-      , dmbeg = con._.multiple.beg
-      , dmend = con._.multiple.end
-      , dsingle = con._.single
-      , single = con[ops.class].single
-      , mbeg = con[ops.class].multiple.beg
-      , mend = con[ops.class].multiple.end
-      , mmid = con[ops.class].multiple.mid
-
-
-    if (buffer.length > 0) {
-      if (ops.type === 'single') {
-
-        com = buffer.filter((comment) => {
-          if (!(comment.match(dmend.match) || 
-            comment.match(dmbeg.match))) {
-            return comment
-          }
-        }).map((comment) => {
-          return comment.replace(dsingle.string, single.string)
-        })
-        .join('')
-      }
-
       else {
-        com = buffer.map((comment, index, array) => {
-          if (comment.match(dsingle.match) && comment.startsWith(comment.match(dsingle.match)[0])) {
-            let indent = comment.match(dsingle.space)[0]
-
-            if (index === 0) {
-              return comment.replace(dsingle.string, mbeg.string + '\n' + indent + mmid.string)
-            }
-            else if (index === array.length - 1) {
-              return comment = comment.replace(dsingle.string, mmid.string) + indent + ' ' + mend.string + '\n'
-            }
-            else {
-              return comment.replace('>', mmid.string)
-            }
+        if (chunk.match(sin.match)) {
+          if (chunk.startsWith(chunk.match(sin.match)[0])) {
+            return self.buffer.push(chunk.replace(sin.string, dsin.string))
           }
-        })
-        .join('')
+        }
+
+        return this.queue(chunk)
       }
+    })
+  }
 
-      buffer = []
-      return this.queue(com + chunk)
-    }
-    return this.queue(chunk)
-  })
+  /**
+   * to
+   *
+   * @param {Object} ops -
+   * @param {Object} con -
+   * @return {undefined}
+   */
+  to(ops, con) {
+
+    let self = this
+
+    ops = defop(ops, self.options)
+    con = defop(con, config)
+
+    return through(function (chunk) {
+      let mul = con[ops.class].multiple
+        , sin = con[ops.class].single
+        , dmul = con._.multiple
+        , dsin = con._.single
+        , com
+
+      if (self.buffer.length > 0) {
+        if (ops.type === 'single') {
+
+          com = self.buffer.filter((comment) => {
+            if (!(comment.match(dmul.end.match) || 
+              comment.match(dmul.beg.match))) {
+              return comment
+            }
+          }).map((comment) => {
+            return comment.replace(dsin.string, sin.string)
+          })
+          .join('')
+        }
+
+        else {
+          com = self.buffer.map((comment, index, array) => {
+            if (comment.match(dsin.match) && comment.startsWith(comment.match(dsin.match)[0])) {
+              let indent = comment.match(dsin.space)[0]
+
+              if (index === 0) {
+                return comment.replace(dsin.string, mul.beg.string + '\n' + indent + mul.mid.string)
+              }
+              else if (index === array.length - 1) {
+                return comment = comment.replace(dsin.string, mul.mid.string) + indent + ' ' + mul.end.string + '\n'
+              }
+              else {
+                return comment.replace('>', mul.mid.string)
+              }
+            }
+          })
+          .join('')
+        }
+
+        self.buffer = []
+        return this.queue(com + chunk)
+      }
+      return this.queue(chunk)
+    })
+  }
 }
-
-
-({class: 'c', type: 'multiple'})).pipe(process.stdout)

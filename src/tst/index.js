@@ -2,7 +2,8 @@ require('string.prototype.startswith')
 require('string.prototype.endswith')
 
 let config = require('../lib/config')
-let comcom = require('../lib/index')
+let Comcom = require('../lib/index')
+
 let through = require('through')
 let Stream = require('stream')
 let tap = require('tap')
@@ -46,16 +47,16 @@ tap.test('config.c.multiple.match', (assert) => {
 
   for (let i = 97; i < 97 + 8; i++) {
     let i = String.fromCharCode(i)
-    let match = test[i].match(config.c.multiple.begin.match)[0]
+    let match = test[i].match(config.c.multiple.beg.match)[0]
 
     assert.ok(test[i].startsWith(match))
   }
 
   for (let i = 97 + 8; i < 97 + 8 + 8; i++) {
     let i = String.fromCharCode(i)
-    let match = test[i].match(config.c.multiple.begin.match)[0]
+    let match = test[i].match(config.c.multiple.end.match)[0]
 
-    assert.ok(test[i].endsWith(match))
+    assert.ok(test[i].endsWith(match + '\n'))
   }
 
   assert.end()
@@ -65,17 +66,21 @@ tap.test('config.c.multiple.match', (assert) => {
  * comcom#split
  */
 tap.test('comcom#split', (assert) => {
-  let stream = new Stream.Readable()
+  let comcom = new Comcom.default()
+    , stream = new Stream.Readable()
     , result = []
 
-  stream.push('/*\n * Hello\n * World\n */')
+  stream.push('/**')
+  stream.push(' * Hello')
+  stream.push(' * World')
+  stream.push(' */')
   stream.push(null)
   stream.pipe(comcom.split()).pipe(through((chunk) => {
     result.push(chunk)
   }))
   .on('close', () => {
     assert.equal(result.length, 4)
-    assert.equal(result[0], '/*\n')
+    assert.equal(result[0], '/**\n')
     assert.equal(result[1], ' * Hello\n')
     assert.equal(result[2], ' * World\n')
     assert.equal(result[3], ' */\n')
@@ -84,28 +89,125 @@ tap.test('comcom#split', (assert) => {
 })
 
 /*
- * comcom#from: class: c, type: multiple
+ * comcom#from (class: c, type: single)
  */
-tap.test('comcom#', (assert) => {
-  let stream = new Stream.Readable()
+tap.test('comcom#from(class: c, type: single)', (assert) => {
+  let comcom = new Comcom.default()
+    , stream = new Stream.Readable()
 
-  stream.push('/**\n')
-  stream.push(' * @param {Number} a\n')
-  stream.push(' * @param {Number} b\n')
-  stream.push(' */\n')
-  stream.push('function test(a, b) {\n')
-  stream.push('  return a + b\n')
-  stream.push('}\n')
+  stream.push('// Test')
+  stream.push('//')
+  stream.push('// @param {Number} a')
+  stream.push('// @param {Number} b')
+  stream.push('function test(a, b) {')
+  stream.push('  return a + b')
   stream.push(null)
 
   stream.pipe(comcom.split())
-  .pipe(comcom.from({class: 'c', type: 'multiple'}, comcom.config))
+  .pipe(comcom.from({class: 'c', type: 'single'}))
   .on('close', () => {
 
+    assert.equal(comcom.buffer[0], '> Test\n')
+    assert.equal(comcom.buffer[1], '>\n')
+    assert.equal(comcom.buffer[2], '> @param {Number} a\n')
+    assert.equal(comcom.buffer[3], '> @param {Number} b\n')
+    assert.end()
+  })
+})
+
+/*
+ * comcom#from (class: c, type: multiple)
+ */
+tap.test('comcom#from(class: c, type: multiple)', (assert) => {
+  let comcom = new Comcom.default()
+    , stream = new Stream.Readable()
+
+  stream.push('/**')
+  stream.push(' * @param {Number} a')
+  stream.push(' * @param {Number} b')
+  stream.push(' */')
+  stream.push('function test(a, b) {')
+  stream.push('  return a + b')
+  stream.push('}')
+  stream.push(null)
+
+  stream.pipe(comcom.split())
+  .pipe(comcom.from({class: 'c', type: 'multiple'}))
+  .on('close', () => {
     assert.equal(comcom.buffer[0], '>>\n')
     assert.equal(comcom.buffer[1], '> @param {Number} a\n')
     assert.equal(comcom.buffer[2], '> @param {Number} b\n')
     assert.equal(comcom.buffer[3], ' <<\n')
+    assert.end()
+  })
+})
+
+/*
+ * comcom#from (class: c, type: multiple)
+ * comcom#to (class: c, type: single)
+ */
+tap.test('comcom#to(class: c, type: single)', (assert) => {
+  let comcom = new Comcom.default()
+    , stream = new Stream.Readable()
+    , buffer = []
+
+  stream.push('/**')
+  stream.push(' * Test')
+  stream.push(' *')
+  stream.push(' * @param {Number} a')
+  stream.push(' * @param {Number} b')
+  stream.push(' */')
+  stream.push('function test(a, b) {')
+  stream.push('  return a + b')
+  stream.push(null)
+
+  stream.pipe(comcom.split())
+  .pipe(comcom.from({class: 'c', type: 'multiple'}))
+  .pipe(comcom.to({class: 'c', type: 'single'}))
+  .pipe(comcom.split())
+  .pipe(through(function (chunk) {
+    buffer.push(chunk)
+  }))
+  .on('close', () => {
+    assert.equal(buffer[0], '// Test\n')
+    assert.equal(buffer[1], '//\n')
+    assert.equal(buffer[2], '// @param {Number} a\n')
+    assert.equal(buffer[3], '// @param {Number} b\n')
+    assert.end()
+  })
+})
+
+/*
+ * comcom#from (class: c, type: single)
+ * comcom#to (class: c, type: multiple)
+ */
+tap.test('comcom#to(class: c, type: multiple)', (assert) => {
+  let comcom = new Comcom.default()
+    , stream = new Stream.Readable()
+    , buffer = []
+
+  stream.push('// Test')
+  stream.push('//')
+  stream.push('// @param {Number} a')
+  stream.push('// @param {Number} b')
+  stream.push('function test(a, b) {')
+  stream.push('  return a + b')
+  stream.push(null)
+
+  stream.pipe(comcom.split())
+  .pipe(comcom.from({class: 'c', type: 'single'}))
+  .pipe(comcom.to({class: 'c', type: 'multiple'}))
+  .pipe(comcom.split())
+  .pipe(through(function (chunk) {
+    buffer.push(chunk)
+  }))
+  .on('close', () => {
+    assert.equal(buffer[0], '/**\n')
+    assert.equal(buffer[1], ' * Test\n')
+    assert.equal(buffer[2], ' *\n')
+    assert.equal(buffer[3], ' * @param {Number} a\n')
+    assert.equal(buffer[4], ' * @param {Number} b\n')
+    assert.equal(buffer[5], ' */\n')
     assert.end()
   })
 })
