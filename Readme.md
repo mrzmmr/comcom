@@ -10,7 +10,7 @@ TODO: Description
 
 **Meta**
 
--   **version**: 1.3.0
+-   **version**: 1.3.1
 -   **author**: mrzmmr
 
 ## from
@@ -19,8 +19,8 @@ from
 
 **Parameters**
 
--   `ops`  
--   `con`  
+-   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** -
+-   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** -
 
 Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
 
@@ -36,7 +36,7 @@ to
 
 **Parameters**
 
--   `ops`  
--   `con`  
+-   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** -
+-   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** -
 
 Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
