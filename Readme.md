@@ -1,11 +1,5 @@
 # .
 
-## _createClass
-
-split
-
-Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
-
 ## comcom
 
 [![AppVeyor](https://img.shields.io/appveyor/ci/mrzmmr/comcom.svg?style=flat-square)](<>)
@@ -23,7 +17,7 @@ TODO: Description
 -   **version**: 1.3.7
 -   **author**: mrzmmr
 
-## key
+## from
 
 from
 
@@ -34,7 +28,13 @@ from
 
 Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
 
-## key
+## split
+
+split
+
+Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
+
+## to
 
 to
 
