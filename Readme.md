@@ -1,4 +1,10 @@
-# ...
+# .
+
+## _createClass
+
+split
+
+Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
 
 ## comcom
 
@@ -14,10 +20,10 @@ TODO: Description
 
 **Meta**
 
--   **version**: 1.3.6
+-   **version**: 1.3.7
 -   **author**: mrzmmr
 
-## from
+## key
 
 from
 
@@ -28,13 +34,7 @@ from
 
 Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
 
-## split
-
-split
-
-Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
-
-## to
+## key
 
 to
 
