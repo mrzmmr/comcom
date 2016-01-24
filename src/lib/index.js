@@ -1,4 +1,8 @@
 /**
+ * [![AppVeyor](https://img.shields.io/appveyor/ci/mrzmmr/comcom.svg?style=flat-square)]()
+ * [![CircleCI](https://img.shields.io/circleci/project/mrzmmr/comcom.svg?style=flat-square)]()
+ * [![Coveralls](https://img.shields.io/coveralls/mrzmmr/comcom.svg?style=flat-square)]()
+ * 
  * TODO: Description
  *
  * # install
@@ -8,7 +12,7 @@
  * ```
  *
  * @module comcom
- * @version 1.3.3
+ * @version 1.3.4
  * @author mrzmmr
  */
 
