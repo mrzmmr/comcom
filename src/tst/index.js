@@ -104,7 +104,7 @@ tap.test('comcom#from(class: c, type: single)', (assert) => {
   stream.push(null)
 
   stream.pipe(comcom.split())
-  .pipe(comcom.from({class: 'c', type: 'single'}))
+  .pipe(comcom.from({class: 'c', type: 'single'}, config))
   .on('close', () => {
 
     assert.equal(comcom.buffer[0], '> Test\n')
@@ -132,7 +132,7 @@ tap.test('comcom#from(class: c, type: multiple)', (assert) => {
   stream.push(null)
 
   stream.pipe(comcom.split())
-  .pipe(comcom.from({class: 'c', type: 'multiple'}))
+  .pipe(comcom.from({class: 'c', type: 'multiple'}, config))
   .on('close', () => {
     assert.equal(comcom.buffer[0], '>>\n')
     assert.equal(comcom.buffer[1], '> @param {Number} a\n')
@@ -162,8 +162,8 @@ tap.test('comcom#to(class: c, type: single)', (assert) => {
   stream.push(null)
 
   stream.pipe(comcom.split())
-  .pipe(comcom.from({class: 'c', type: 'multiple'}))
-  .pipe(comcom.to({class: 'c', type: 'single'}))
+  .pipe(comcom.from({class: 'c', type: 'multiple'}, config))
+  .pipe(comcom.to({class: 'c', type: 'single'}, config))
   .pipe(comcom.split())
   .pipe(through(function (chunk) {
     buffer.push(chunk)
@@ -195,8 +195,8 @@ tap.test('comcom#to(class: c, type: multiple)', (assert) => {
   stream.push(null)
 
   stream.pipe(comcom.split())
-  .pipe(comcom.from({class: 'c', type: 'single'}))
-  .pipe(comcom.to({class: 'c', type: 'multiple'}))
+  .pipe(comcom.from({class: 'c', type: 'single'}, config))
+  .pipe(comcom.to({class: 'c', type: 'multiple'}, config))
   .pipe(comcom.split())
   .pipe(through(function (chunk) {
     buffer.push(chunk)
