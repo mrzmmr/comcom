@@ -1,15 +1,17 @@
 {
   "name": "comcom",
-  "version": "1.3.7",
+  "version": "1.4.8",
   "description": "A simple and easy to use comment to comment parser",
-  "main": "dst/lib/index.js",
+  "main": "./lib/index.js",
+  "bin": "./comcom.js",
   "scripts": {
     "prepublish": "npm run build",
-    "build": "babel --out-dir dst src",
     "all": "npm run test; npm run readme",
-    "pretest": "eslint src/lib; npm run build",
-    "test": "tap --cov -R spec dst/tst/index.js",
-    "readme": "mv .babelrc b; documentation readme src/lib/index.js --readme-file Readme.md -s \".\"; mv b .babelrc"
+    "pretest": "eslint ./src/lib; npm run build",
+    "clean": "rm -rf ./lib ./tst ./.nyc_output",
+    "test": "tap --cov -R spec ./tst/index.js",
+    "build": "babel --out-dir ./lib ./src/lib; babel --out-dir ./tst ./src/tst",
+    "readme": "mv .babelrc b; documentation readme ./src/lib/index.js --readme-file Readme.md -s \".\"; mv b .babelrc"
   },
   "repository": {
     "type": "git",
@@ -34,6 +36,7 @@
     "babel-plugin-transform-es2015-block-scoping": "^6.4.0",
     "babel-plugin-transform-es2015-classes": "^6.4.5",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.4.0",
+    "babel-plugin-transform-es2015-parameters": "^6.4.5",
     "documentation": "github:documentationjs/documentation",
     "eslint": "^1.10.3",
     "tap": "^5.0.0"
