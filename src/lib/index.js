@@ -12,7 +12,7 @@
  * ```
  *
  * @module comcom
- * @version 1.3.7
+ * @version 1.3.8
  * @author mrzmmr
  */
 
@@ -30,11 +30,47 @@ export default class Comcom {
 
   constructor() {
     this.switched = false
+    this.config = config
     this.buffer = []
     this.options = {
-      class: null,
-      type: null
+      from: {
+        class: null,
+        type: null
+      },
+      to: {
+        class: null,
+        type: null
+      }
     }
+  }
+
+  /**
+   * convert
+   *
+   * @param ops
+   * @param con
+   * @return {undefined}
+   */
+  convert(ops={}, con={}) {
+    let self = this
+
+    ops = defop(ops, self.options)
+    con = defop(con, self.config)
+
+    return through(function (chunk) {
+      let stream = new require('stream').Readable()
+        , that = this
+
+      stream.push(chunk)
+      stream.push(null)
+
+      stream.pipe(self.split())
+      .pipe(self.from(ops.from, con))
+      .pipe(self.to(ops.to, con))
+      .pipe(through(function (chunk) {
+        return that.queue(chunk)
+      }))
+    })
   }
 
   /**
@@ -59,12 +95,15 @@ export default class Comcom {
    * @param {Object} con -
    * @return {undefined}
    */
-  from(ops, con) {
+  from(ops={}, con={}) {
 
     let self = this
 
     ops = defop(ops, self.options)
-    con = defop(con, config)
+    con = defop(con, self.config)
+
+    ops.class = ops.class || ops.from.class
+    ops.type = ops.type || ops.from.type
 
     return through(function (chunk) {
 
@@ -126,12 +165,15 @@ export default class Comcom {
    * @param {Object} con -
    * @return {undefined}
    */
-  to(ops, con) {
+  to(ops={}, con={}) {
 
     let self = this
 
     ops = defop(ops, self.options)
-    con = defop(con, config)
+    con = defop(con, self.config)
+
+    ops.class = ops.class || ops.to.class
+    ops.type = ops.type || ops.to.type
 
     return through(function (chunk) {
       let mul = con[ops.class].multiple
