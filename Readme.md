@@ -2,9 +2,9 @@
 
 ## comcom
 
-[![AppVeyor](https://img.shields.io/appveyor/ci/mrzmmr/comcom.svg?style=flat-square)](<>)
-[![CircleCI](https://img.shields.io/circleci/project/mrzmmr/comcom.svg?style=flat-square)](<>)
-[![Coveralls](https://img.shields.io/coveralls/mrzmmr/comcom.svg?style=flat-square)](<>)
+[![AppVeyor](https://img.shields.io/appveyor/ci/mrzmmr/comcom.svg?style=flat-square)](https://ci.appveyor.com/project/mrzmmr/comcom)
+[![CircleCI](https://img.shields.io/circleci/project/mrzmmr/comcom.svg?style=flat-square)](https://circleci.com/gh/mrzmmr/comcom/tree/master)
+[![Coveralls](https://img.shields.io/coveralls/mrzmmr/comcom.svg?style=flat-square)](https://coveralls.io/github/mrzmmr/comcom)
 
 TODO: Description
 
