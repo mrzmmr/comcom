@@ -12,7 +12,7 @@
  * ```
  *
  * @module comcom
- * @version 1.4.8
+ * @version 1.4.9
  * @author mrzmmr
  */
 
@@ -45,11 +45,11 @@ export default class Comcom {
   }
 
   /**
-   * convert
+   * Comcom#convert
    *
-   * @param ops
-   * @param con
-   * @return {undefined}
+   * @param {Object} [ops={}] -
+   * @param {Object} [con={}] -
+   * @return {Stream}
    */
   convert(ops={}, con={}) {
     let self = this
@@ -74,9 +74,9 @@ export default class Comcom {
   }
 
   /**
-   * split
+   * Comcom#split
    *
-   * @return {undefined}
+   * @return {Stream}
    */
   split() {
     return through(function (chunk) {
@@ -89,11 +89,11 @@ export default class Comcom {
   }
 
   /**
-   * from
+   * Comcom#from
    *
-   * @param {Object} ops -
-   * @param {Object} con -
-   * @return {undefined}
+   * @param {Object} [ops={}] -
+   * @param {Object} [con={}] -
+   * @return {Stream}
    */
   from(ops={}, con={}) {
 
@@ -159,11 +159,11 @@ export default class Comcom {
   }
 
   /**
-   * to
+   * Comcom#to
    *
-   * @param {Object} ops -
-   * @param {Object} con -
-   * @return {undefined}
+   * @param {Object} [ops={}] -
+   * @param {Object} [con={}] -
+   * @return {Stream}
    */
   to(ops={}, con={}) {
 

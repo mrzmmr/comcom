@@ -1,17 +1,17 @@
 {
   "name": "comcom",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "A simple and easy to use comment to comment parser",
   "main": "./lib/index.js",
   "bin": "./comcom.js",
   "scripts": {
     "prepublish": "npm run build",
     "all": "npm run test; npm run readme",
-    "pretest": "eslint ./src/lib; npm run build",
-    "clean": "rm -rf ./lib ./tst ./.nyc_output",
-    "test": "tap --cov -R spec ./tst/index.js",
-    "build": "babel --out-dir ./lib ./src/lib; babel --out-dir ./tst ./src/tst",
-    "readme": "mv .babelrc b; documentation readme ./src/lib/index.js --readme-file Readme.md -s \".\"; mv b .babelrc"
+    "pretest": "eslint src/lib; npm run build",
+    "clean": "rm -rf lib tst .nyc_output",
+    "test": "tap --cov -R spec tst/index.js",
+    "build": "babel --out-dir lib src/lib; babel --out-dir tst src/tst",
+    "readme": "mv .babelrc b; documentation readme src/lib/index.js --readme-file Readme.md -s \".\"; mv b .babelrc"
   },
   "repository": {
     "type": "git",

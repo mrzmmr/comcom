@@ -14,44 +14,44 @@ TODO: Description
 
 **Meta**
 
--   **version**: 1.4.8
+-   **version**: 1.4.9
 -   **author**: mrzmmr
 
 ## convert
 
-convert
+Comcom#convert
 
 **Parameters**
 
--   `ops`  
--   `con`  
+-   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
+-   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
 
-Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
+Returns **[Stream](https://nodejs.org/api/stream.html)** 
 
 ## from
 
-from
+Comcom#from
 
 **Parameters**
 
--   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=(default {})** -
--   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=(default {})** -
+-   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
+-   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
 
-Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
+Returns **[Stream](https://nodejs.org/api/stream.html)** 
 
 ## split
 
-split
+Comcom#split
 
-Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
+Returns **[Stream](https://nodejs.org/api/stream.html)** 
 
 ## to
 
-to
+Comcom#to
 
 **Parameters**
 
--   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=(default {})** -
--   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=(default {})** -
+-   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
+-   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
 
-Returns **[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
+Returns **[Stream](https://nodejs.org/api/stream.html)** 
