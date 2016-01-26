@@ -1,3 +1,5 @@
+export default config
+
 const config = {
   '_': {
     single: {

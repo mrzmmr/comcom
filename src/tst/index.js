@@ -1,12 +1,10 @@
-require('string.prototype.startswith')
-require('string.prototype.endswith')
-
-let config = require('../lib/config')
-let Comcom = require('../lib/index')
-
-let through = require('through')
-let Stream = require('stream')
-let tap = require('tap')
+import 'string.prototype.startswith'
+import 'string.prototype.endswith'
+import config from '../lib/config'
+import Comcom from '../lib/index'
+import through from 'through'
+import Stream from 'stream'
+import tap from 'tap'
 
 /*
  * Regex tests
@@ -66,7 +64,7 @@ tap.test('config.c.multiple.match', (assert) => {
  * comcom#split
  */
 tap.test('comcom#split', (assert) => {
-  let comcom = new Comcom.default()
+  let comcom = new Comcom()
     , stream = new Stream.Readable()
     , result = []
 
@@ -92,7 +90,7 @@ tap.test('comcom#split', (assert) => {
  * comcom#from (class: c, type: single)
  */
 tap.test('comcom#from(class: c, type: single)', (assert) => {
-  let comcom = new Comcom.default()
+  let comcom = new Comcom()
     , stream = new Stream.Readable()
 
   stream.push('// Test')
@@ -119,7 +117,7 @@ tap.test('comcom#from(class: c, type: single)', (assert) => {
  * comcom#from (class: c, type: multiple)
  */
 tap.test('comcom#from(class: c, type: multiple)', (assert) => {
-  let comcom = new Comcom.default()
+  let comcom = new Comcom()
     , stream = new Stream.Readable()
 
   stream.push('/**')
@@ -147,7 +145,7 @@ tap.test('comcom#from(class: c, type: multiple)', (assert) => {
  * comcom#to (class: c, type: single)
  */
 tap.test('comcom#to(class: c, type: single)', (assert) => {
-  let comcom = new Comcom.default()
+  let comcom = new Comcom()
     , stream = new Stream.Readable()
     , buffer = []
 
@@ -182,7 +180,7 @@ tap.test('comcom#to(class: c, type: single)', (assert) => {
  * comcom#to (class: c, type: multiple)
  */
 tap.test('comcom#to(class: c, type: multiple)', (assert) => {
-  let comcom = new Comcom.default()
+  let comcom = new Comcom()
     , stream = new Stream.Readable()
     , buffer = []
 

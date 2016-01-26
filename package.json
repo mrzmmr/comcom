@@ -1,6 +1,6 @@
 {
   "name": "comcom",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "description": "A simple and easy to use comment to comment parser",
   "main": "./lib/index.js",
   "bin": "./comcom.js",

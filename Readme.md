@@ -8,13 +8,17 @@
 
 TODO: Description
 
-## install
+### install
 
     npm install [ -g ] comcom
 
+### then
+
+    import Comcom from 'comcom/lib/index'
+
 **Meta**
 
--   **version**: 1.4.9
+-   **version**: 1.4.10
 -   **author**: mrzmmr
 
 ## convert

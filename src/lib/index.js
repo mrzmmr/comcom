@@ -5,28 +5,32 @@
  * 
  * TODO: Description
  *
- * # install
+ * ## install
  *
  * ```
  * npm install [ -g ] comcom
  * ```
  *
+ * ## then
+ *
+ * ```
+ * import Comcom from 'comcom/lib/index'
+ * ```
+ *
  * @module comcom
- * @version 1.4.9
+ * @version 1.4.10
  * @author mrzmmr
  */
 
 /*
  * Dependencies
  */
-require('string.prototype.startswith')
-require('string.prototype.endswith')
-
-let through = require('through')
-  , config = require('./config')
-  , defop = require('defop')
 
 import defaultsdeep from 'lodash.defaultsdeep'
+import 'string.prototype.startswith'
+import 'string.prototype.endswith'
+import through from 'through'
+import config from './config'
 
 export default class Comcom {
 
