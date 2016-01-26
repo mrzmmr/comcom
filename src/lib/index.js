@@ -26,6 +26,8 @@ let through = require('through')
   , config = require('./config')
   , defop = require('defop')
 
+import defaultsdeep from 'lodash.defaultsdeep'
+
 export default class Comcom {
 
   constructor() {
@@ -54,8 +56,8 @@ export default class Comcom {
   convert(ops={}, con={}) {
     let self = this
 
-    ops = defop(ops, self.options)
-    con = defop(con, self.config)
+    ops = defaultsdeep(ops, self.options)
+    con = defaultsdeep(con, self.config)
 
     return through(function (chunk) {
       let stream = new require('stream').Readable()
@@ -99,8 +101,8 @@ export default class Comcom {
 
     let self = this
 
-    ops = defop(ops, self.options)
-    con = defop(con, self.config)
+    ops = defaultsdeep(ops, self.options)
+    con = defaultsdeep(con, self.config)
 
     ops.class = ops.class || ops.from.class
     ops.type = ops.type || ops.from.type
@@ -169,8 +171,8 @@ export default class Comcom {
 
     let self = this
 
-    ops = defop(ops, self.options)
-    con = defop(con, self.config)
+    ops = defaultsdeep(ops, self.options)
+    con = defaultsdeep(con, self.config)
 
     ops.class = ops.class || ops.to.class
     ops.type = ops.type || ops.to.type

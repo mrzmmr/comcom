@@ -8,7 +8,7 @@
     "prepublish": "npm run build",
     "all": "npm run test; npm run readme",
     "pretest": "eslint src/lib; npm run build",
-    "clean": "rm -rf lib tst .nyc_output",
+    "clean": "rimraf lib tst .nyc_output",
     "test": "tap --cov -R spec tst/index.js",
     "build": "babel --out-dir lib src/lib; babel --out-dir tst src/tst",
     "readme": "mv .babelrc b; documentation readme src/lib/index.js --readme-file Readme.md -s \".\"; mv b .babelrc"
@@ -39,10 +39,12 @@
     "babel-plugin-transform-es2015-parameters": "^6.4.5",
     "documentation": "github:documentationjs/documentation",
     "eslint": "^1.10.3",
+    "rimraf": "^2.5.1",
     "tap": "^5.0.0"
   },
   "dependencies": {
     "defop": "^1.1.10",
+    "lodash.defaultsdeep": "^4.0.1",
     "source-map-support": "^0.4.0",
     "string.prototype.endswith": "^0.2.0",
     "string.prototype.startswith": "^0.2.0",
