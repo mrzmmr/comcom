@@ -2,10 +2,9 @@
 
 ## comcom
 
-[![Circle CI](https://circleci.com/gh/mrzmmr/comcom/tree/master.svg?style=svg)](https://circleci.com/gh/mrzmmr/comcom/tree/master)
-[![Build status](https://ci.appveyor.com/api/projects/status/1cj7r743mlxkjm80/branch/master?svg=true)](https://ci.appveyor.com/project/mrzmmr/comcom/branch/master)
-
-[![Coverage Status](https://coveralls.io/repos/github/mrzmmr/comcom/badge.svg?branch=master)](https://coveralls.io/github/mrzmmr/comcom?branch=master)
+[![AppVeyor](https://img.shields.io/appveyor/ci/mrzmmr/comcom.svg?style=flat-square)](<>)
+[![CircleCI](https://img.shields.io/circleci/project/mrzmmr/comcom.svg?style=flat-square)](<>)
+[![Coveralls](https://img.shields.io/coveralls/mrzmmr/comcom.svg?style=flat-square)](<>)
 
 TODO: Description
 
