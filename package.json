@@ -43,7 +43,6 @@
     "tap": "^5.0.0"
   },
   "dependencies": {
-    "defop": "^1.1.10",
     "lodash.defaultsdeep": "^4.0.1",
     "source-map-support": "^0.4.0",
     "string.prototype.endswith": "^0.2.0",
