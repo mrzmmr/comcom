@@ -18,7 +18,7 @@
  * ```
  *
  * @module comcom
- * @version 1.4.10
+ * @version 1.5.10
  * @author mrzmmr
  */
 

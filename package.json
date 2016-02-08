@@ -1,6 +1,6 @@
 {
   "name": "comcom",
-  "version": "1.4.10",
+  "version": "1.5.10",
   "description": "A simple and easy to use comment to comment parser",
   "main": "./lib/index.js",
   "bin": "./comcom.js",
@@ -8,8 +8,8 @@
     "prepublish": "npm run build",
     "all": "npm run test; npm run readme",
     "pretest": "eslint src; npm run build",
-    "clean": "rimraf lib tst .nyc_output",
-    "test": "tap --cov -R spec tst/index.js",
+    "clean": "rimraf lib tst .nyc_output ./comcom.js",
+    "test": "tap --cov -R spec tst/*.js",
     "build": "babel --out-dir ./ src",
     "readme": "mv .babelrc b; documentation readme src/lib/index.js --readme-file Readme.md -s \".\"; mv b .babelrc"
   },
@@ -43,10 +43,12 @@
     "tap": "^5.0.0"
   },
   "dependencies": {
+    "commander": "^2.9.0",
     "lodash.defaultsdeep": "^4.0.1",
     "source-map-support": "^0.4.0",
     "string.prototype.endswith": "^0.2.0",
     "string.prototype.startswith": "^0.2.0",
-    "through": "^2.3.8"
+    "through": "^2.3.8",
+    "yargs": "^3.32.0"
   }
 }

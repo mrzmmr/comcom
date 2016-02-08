@@ -18,7 +18,7 @@ TODO: Description
 
 **Meta**
 
--   **version**: 1.4.10
+-   **version**: 1.5.10
 -   **author**: mrzmmr
 
 ## convert
@@ -27,8 +27,8 @@ Comcom#convert
 
 **Parameters**
 
--   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** - (optional, default `{}`)
--   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** - (optional, default `{}`)
+-   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
+-   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
 
 Returns **[Stream](https://nodejs.org/api/stream.html)** 
 
@@ -38,8 +38,8 @@ Comcom#from
 
 **Parameters**
 
--   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** - (optional, default `{}`)
--   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** - (optional, default `{}`)
+-   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
+-   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
 
 Returns **[Stream](https://nodejs.org/api/stream.html)** 
 
@@ -55,7 +55,7 @@ Comcom#to
 
 **Parameters**
 
--   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** - (optional, default `{}`)
--   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** - (optional, default `{}`)
+-   `ops` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
+-   `con` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=** \- (optional, default `{}`)
 
 Returns **[Stream](https://nodejs.org/api/stream.html)** 
