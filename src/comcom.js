@@ -1,17 +1,7 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
 import commander from 'commander'
+import Comcom from './lib/index'
 
-let comcom = commander
-
-comcom
-  .version('0.0.1')
-
-comcom
-  .command('from <class>,<type>', 'Tells comcom what type and class of comment is being converted from')
-
-comcom
-  .command('to <class>,<type>', 'Tells comcom what type and class of comment is being converted to')
-
-comcom
-  .parse(process.argv)
+commander.version(require('./package.json').version)
+commander.parse(process.argv)

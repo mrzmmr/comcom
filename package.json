@@ -5,12 +5,13 @@
   "main": "./lib/index.js",
   "bin": "./comcom.js",
   "scripts": {
+    "prebuild": "mkdirp ./bin",
     "prepublish": "npm run build",
+    "test": "tap --cov -R spec tst/*.js",
     "all": "npm run test; npm run readme",
     "pretest": "eslint src; npm run build",
-    "clean": "rimraf lib tst .nyc_output ./comcom.js",
-    "test": "tap --cov -R spec tst/*.js",
-    "build": "babel --out-dir ./ src",
+    "clean": "rimraf bin lib tst .nyc_output",
+    "build": "babel --out-dir ./ src && mv comcom.js bin",
     "readme": "mv .babelrc b; documentation readme src/lib/index.js --readme-file Readme.md -s \".\"; mv b .babelrc"
   },
   "repository": {
