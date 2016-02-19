@@ -9,7 +9,7 @@
     "all": "npm run test; npm run readme",
     "pretest": "eslint src; npm run build",
     "clean": "rimraf lib tst .nyc_output",
-    "test": "tap --cov -R spec tst/index.js",
+    "test": "tap --cov -R spec tst/*.js",
     "build": "babel --out-dir ./ src",
     "readme": "mv .babelrc b; documentation readme src/lib/index.js --readme-file Readme.md -s \".\"; mv b .babelrc"
   },
@@ -43,6 +43,7 @@
     "tap": "^5.0.0"
   },
   "dependencies": {
+    "commander": "^2.9.0",
     "lodash.defaultsdeep": "^4.0.1",
     "source-map-support": "^0.4.0",
     "string.prototype.endswith": "^0.2.0",
