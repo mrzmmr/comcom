@@ -7,7 +7,7 @@
   "scripts": {
     "prebuild": "mkdirp ./bin",
     "prepublish": "npm run build",
-    "test": "tap --cov -R spec tst/*.js",
+    "test": "tap --cov -R spec tst",
     "all": "npm run test; npm run readme",
     "pretest": "eslint src; npm run build",
     "clean": "rimraf bin lib tst .nyc_output",
