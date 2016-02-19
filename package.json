@@ -40,6 +40,8 @@
     "babel-plugin-transform-es2015-parameters": "^6.4.5",
     "documentation": "github:documentationjs/documentation",
     "eslint": "^1.10.3",
+    "mkdirp": "^0.5.1",
+    "mv": "^2.1.1",
     "rimraf": "^2.5.1",
     "tap": "^5.0.0"
   },
